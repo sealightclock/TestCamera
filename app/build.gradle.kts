@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.jonathan.testcamera"
-        minSdk = 24
+        minSdk = 28
         //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
