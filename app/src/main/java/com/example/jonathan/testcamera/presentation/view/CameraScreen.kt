@@ -8,6 +8,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -74,20 +77,30 @@ fun CameraScreen(viewModel: CameraViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        capturedImageUri?.let { uri ->
-            Image(
-                //bitmap = uri.asImageBitmap(),
-                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, uri)).asImageBitmap(),
-                contentDescription = "Captured Image",
-                modifier = Modifier.size(200.dp)
-            )
+        Box(
+            modifier = Modifier
+                .size(200.dp) // Set the size of the image
+                .border(
+                    width = 2.dp, // Border width
+                    color = Color.Black, // Border color
+                    shape = RoundedCornerShape(8.dp) // Optional: Rounded corners
+                )
+        ) {
+            capturedImageUri?.let { uri ->
+                Image(
+                    bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, uri)).asImageBitmap(),
+                    contentDescription = "Captured Image",
+                    modifier = Modifier.fillMaxSize(), // Ensures the image fills the size of the Box
+                    contentScale = ContentScale.Crop // Adjusts how the image is scaled
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.size(200.dp) // Set the size
         ) {
             if (isCameraPermissionGranted) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
